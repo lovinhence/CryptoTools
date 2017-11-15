@@ -66,13 +66,15 @@ class GateioApi(HttpApi):
     _baseurl = 'http://data.gate.io/api2/1'
 
     def getCurrentPrice(self, currency_pair, direction):
+        index = 0
         if 'buy' == direction:
             direction = 'asks'
+            index = -1
         elif 'sell' == direction:
             direction = 'bids'
         result = self._get_proxied(self._baseurl + "/orderBook/" + currency_pair)
         result_json = result.json()
-        price = result_json[direction][0][0]
+        price = result_json[direction][index][0]
         return float(price)
 
 
@@ -126,7 +128,7 @@ if __name__ == '__main__':
     # hitbtcApi = HitbtcApi()
     # print(hitbtcApi.getCurrentPrice("BTMETH", "sell"))
     gateioApi = GateioApi()
-    print(gateioApi.getCurrentPrice("btm_eth", "buy"))
+    print(gateioApi.getCurrentPrice("lrc_eth", "sell"))
     # binanceApi = BinanceApi()
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
 
