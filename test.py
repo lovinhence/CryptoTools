@@ -1,4 +1,5 @@
 import json
+import threading
 
 class A():
     def x(self):
@@ -19,6 +20,13 @@ if __name__ == '__main__':
     # # s = s.replace("1", "4")
     # print(s)
 
-    s = "A"
-    obj = eval(s)
-    obj().x()
+    # s = "A"
+    # obj = eval(s)
+    # obj().x()
+
+    def a():
+        print("ok")
+
+    for i in range(10):
+        t = threading.Thread(target=a())
+        t.start()
