@@ -1,0 +1,14 @@
+{
+  "gateio": {
+    "className": "GateioApi",
+    "baseUrl": "http://data.gate.io/api2/1",
+    "currencyPairTemplate": "#SRC_#DST",
+    "isUpper": false
+  },
+  "binance": {
+    "className": "BinanceApi",
+    "baseUrl": "https://www.binance.com/api",
+    "currencyPairTemplate": "#SRC#DST",
+    "isUpper": true
+  }
+}

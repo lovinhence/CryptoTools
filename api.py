@@ -1,7 +1,11 @@
 import requests
 
+from util import *
+
 # if work,all network requests must go through proxies
 DEBUG = True
+
+exchangeConfigJson = getExchangeConfigJson()
 
 
 class Api():
@@ -9,6 +13,15 @@ class Api():
     _baseurl = ''
 
     # currency_pair对不同的交易所统一做处理，交易币在前，基准币在后
+    def getCurrencyPair(self, src_currency, dst_currency):
+        currencyPairTemplate = exchangeConfigJson[self._exchange_name]['currencyPairTemplate']
+        isUpper = exchangeConfigJson[self._exchange_name]['isUpper']
+        if isUpper:
+            src_currency = src_currency.upper()
+            dst_currency = dst_currency.upper()
+        return currencyPairTemplate.replace("#SRC", src_currency).replace("#DST", dst_currency)
+
+
     def buy(self, currency_pair):
         pass
 
@@ -127,9 +140,10 @@ if __name__ == '__main__':
     # print(cryptopiaApi.getCurrentPrice("BTM_BTC", "sell"))
     # hitbtcApi = HitbtcApi()
     # print(hitbtcApi.getCurrentPrice("BTMETH", "sell"))
-    gateioApi = GateioApi()
-    print(gateioApi.getCurrentPrice("lrc_eth", "sell"))
-    # binanceApi = BinanceApi()
+    # gateioApi = GateioApi()
+    # print(gateioApi.getCurrentPrice("btm_eth", "sell"))
+    binanceApi = BinanceApi()
+    print(binanceApi.getCurrencyPair("btm", "eth"))
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
 
 
