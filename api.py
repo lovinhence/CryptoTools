@@ -45,8 +45,8 @@ class HttpApi(Api):
     _proxies = {}
     if DEBUG:
         _proxies = {
-            'http': '127.0.0.1:1081',
-            'https': '127.0.0.1:1081'
+            'http': '127.0.0.1:1080',
+            'https': '127.0.0.1:1080'
         }
 
     def _get(self, url, **kwargs):
@@ -85,10 +85,13 @@ class GateioApi(HttpApi):
             index = -1
         elif 'sell' == direction:
             direction = 'bids'
-        result = self._get_proxied(self._baseurl + "/orderBook/" + currency_pair)
-        result_json = result.json()
-        price = result_json[direction][index][0]
-        return float(price)
+        try:
+            result = self._get_proxied(self._baseurl + "/orderBook/" + currency_pair)
+            result_json = result.json()
+            price = result_json[direction][index][0]
+            return float(price)
+        except Exception as e:
+            print(str(e))
 
 
 class HitbtcWebSocketApi(WebSocketApi):
@@ -129,10 +132,13 @@ class BinanceApi(HttpApi):
         params = {
             "symbol": currency_pair
         }
-        result = self._get_proxied(self._baseurl + "/v1/depth", params)
-        result_json = result.json()
-        price = result_json[direction][0][0]
-        return float(price)
+        try:
+            result = self._get_proxied(self._baseurl + "/v1/depth", params)
+            result_json = result.json()
+            price = result_json[direction][0][0]
+            return float(price)
+        except Exception as e:
+            print(str(e))
 
 
 if __name__ == '__main__':
