@@ -1,6 +1,5 @@
 import json
-import pyautogui
-import threading
+import win32api, win32con
 
 
 def getExchangeConfigJson():
@@ -15,9 +14,7 @@ def getExchangeConfigJson():
 
 
 def popupAlert(alert_str):
-    # t = threading.Thread(target=pyautogui.alert, args=(alert_str,), kwargs={"timeout": 5})
-    # t.start()
-    pyautogui.alert(alert_str, timeout=5)
+    win32api.MessageBox(0, alert_str, "title", win32con.MB_OK)
 
 
 def voiceAlert(alert_str):

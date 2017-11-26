@@ -149,7 +149,7 @@ if __name__ == '__main__':
     # gateioApi = GateioApi()
     # print(gateioApi.getCurrentPrice("btm_eth", "sell"))
     binanceApi = BinanceApi()
-    print(binanceApi.getCurrencyPair("btm", "eth"))
+    print(binanceApi.getcur("btm", "eth"))
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
 
 
