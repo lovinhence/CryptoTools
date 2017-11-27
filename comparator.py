@@ -23,9 +23,9 @@ def compare(src_exchange, dst_exchange, src_currency, dst_currency):
         print(ratio_src_dst_str)
         print(ratio_dst_src_str)
         if ratio_src_dst > 1.015:
-            popupAlert(ratio_src_dst_str)
+            alert(ratio_src_dst_str)
         if ratio_dst_src > 1.015:
-            popupAlert(ratio_dst_src_str)
+            alert(ratio_dst_src_str)
     except Exception as e:
         print(str(e))
 

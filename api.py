@@ -45,8 +45,8 @@ class HttpApi(Api):
     _proxies = {}
     if DEBUG:
         _proxies = {
-            'http': '127.0.0.1:1080',
-            'https': '127.0.0.1:1080'
+            'http': '127.0.0.1:1081',
+            'https': '127.0.0.1:1081'
         }
 
     def _get(self, url, **kwargs):

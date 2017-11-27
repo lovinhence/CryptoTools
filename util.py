@@ -1,5 +1,7 @@
 import json
 import win32api, win32con
+import pyttsx3
+import threading
 
 
 def getExchangeConfigJson():
@@ -18,7 +20,16 @@ def popupAlert(alert_str):
 
 
 def voiceAlert(alert_str):
-    pass
+    engine = pyttsx3.init()
+    engine.say(alert_str)
+    engine.runAndWait()
+
+
+def alert(alert_str):
+    t1 = threading.Thread(target=popupAlert, args=(alert_str,))
+    t1.start()
+    t2 = threading.Thread(target=voiceAlert, args=(alert_str,))
+    t2.start()
 
 
 if __name__ == '__main__':
