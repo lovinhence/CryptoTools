@@ -45,8 +45,8 @@ class HttpApi(Api):
     _proxies = {}
     if DEBUG:
         _proxies = {
-            'http': '127.0.0.1:1081',
-            'https': '127.0.0.1:1081'
+            'http': '127.0.0.1:1082',
+            'https': '127.0.0.1:1082'
         }
 
     def _get(self, url, **kwargs):
@@ -141,6 +141,24 @@ class BinanceApi(HttpApi):
             print(str(e))
 
 
+class BitfinexApi(HttpApi):
+    _exchange_name = 'bitfinex'
+    _baseurl = "https://api.bitfinex.com/v1"
+
+    def getCurrentPrice(self, currency_pair, direction):
+        if 'buy' == direction:
+            direction = 'asks'
+        elif 'sell' == direction:
+            direction = 'bids'
+        try:
+            result = self._get_proxied(self._baseurl + "/book/" + currency_pair)
+            result_json = result.json()
+            price = result_json[direction][0]["price"]
+            return float(price)
+        except Exception as e:
+            print(str(e))
+
+
 if __name__ == '__main__':
     # cryptopiaApi = CryptopiaApi()
     # print(cryptopiaApi.getCurrentPrice("BTM_BTC", "sell"))
@@ -148,8 +166,10 @@ if __name__ == '__main__':
     # print(hitbtcApi.getCurrentPrice("BTMETH", "sell"))
     # gateioApi = GateioApi()
     # print(gateioApi.getCurrentPrice("btm_eth", "sell"))
-    binanceApi = BinanceApi()
-    print(binanceApi.getcur("btm", "eth"))
+    # binanceApi = BinanceApi()
+    # print(binanceApi.getCurrentPrice("btm", "eth"))
+    bitfinexApi = BitfinexApi()
+    print(bitfinexApi.getCurrentPrice("qsheth", "buy"))
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
 
 
