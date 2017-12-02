@@ -12,15 +12,24 @@ class Api():
     _exchange_name = ""
     _baseurl = ''
 
+    def __init__(self):
+        self._baseurl = exchangeConfigJson[self._exchange_name]['baseUrl']
+
     # currency_pair对不同的交易所统一做处理，交易币在前，基准币在后
     def getCurrencyPair(self, src_currency, dst_currency):
+        # 处理同一币种在不同交易所名字不一样的问题
+        if "aliases" in exchangeConfigJson[self._exchange_name]:
+            if src_currency in exchangeConfigJson[self._exchange_name]['aliases']:
+                src_currency = exchangeConfigJson[self._exchange_name]['aliases'][src_currency]
+            if dst_currency in exchangeConfigJson[self._exchange_name]['aliases']:
+                dst_currency = exchangeConfigJson[self._exchange_name]['aliases'][dst_currency]
+
         currencyPairTemplate = exchangeConfigJson[self._exchange_name]['currencyPairTemplate']
         isUpper = exchangeConfigJson[self._exchange_name]['isUpper']
         if isUpper:
             src_currency = src_currency.upper()
             dst_currency = dst_currency.upper()
         return currencyPairTemplate.replace("#SRC", src_currency).replace("#DST", dst_currency)
-
 
     def buy(self, currency_pair):
         pass
@@ -112,10 +121,6 @@ class HitbtcApi(HttpApi):
         return float(price)
 
 
-class BitfinexApi(HttpApi):
-    _exchange_name = 'bitfinex'
-
-
 class BittrexApi(HttpApi):
     _exchange_name = 'bittrex'
 
@@ -169,7 +174,6 @@ if __name__ == '__main__':
     # binanceApi = BinanceApi()
     # print(binanceApi.getCurrentPrice("btm", "eth"))
     bitfinexApi = BitfinexApi()
-    print(bitfinexApi.getCurrentPrice("qsheth", "buy"))
+    print(bitfinexApi.getCurrencyPair("qash", "eth"))
+    print()
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
-
-

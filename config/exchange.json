@@ -10,5 +10,14 @@
     "baseUrl": "https://www.binance.com/api",
     "currencyPairTemplate": "#SRC#DST",
     "isUpper": true
+  },
+  "bitfinex": {
+    "className": "BitfinexApi",
+    "baseUrl": "https://api.bitfinex.com/v1",
+    "currencyPairTemplate": "#SRC#DST",
+    "isUpper": false,
+    "aliases": {
+      "qash": "qsh"
+    }
   }
 }

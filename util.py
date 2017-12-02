@@ -16,6 +16,7 @@ def getExchangeConfigJson():
 
 
 def popupAlert(alert_str):
+    # win32api.Mess
     win32api.MessageBox(0, alert_str, "title", win32con.MB_OK)
 
 
