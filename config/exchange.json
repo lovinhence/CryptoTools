@@ -19,5 +19,11 @@
     "aliases": {
       "qash": "qsh"
     }
+  },
+  "huobi": {
+    "className": "HuobiApi",
+    "baseUrl": "https://api.huobi.pro",
+    "currencyPairTemplate": "#SRC#DST",
+    "isUpper": false
   }
 }

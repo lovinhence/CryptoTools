@@ -54,8 +54,8 @@ class HttpApi(Api):
     _proxies = {}
     if DEBUG:
         _proxies = {
-            'http': '127.0.0.1:1082',
-            'https': '127.0.0.1:1082'
+            'http': '127.0.0.1:1081',
+            'https': '127.0.0.1:1081'
         }
 
     def _get(self, url, **kwargs):
@@ -164,6 +164,28 @@ class BitfinexApi(HttpApi):
             print(str(e))
 
 
+class HuobiApi(HttpApi):
+    _exchange_name = 'huobi'
+    _baseurl = "https://api.huobi.pro"
+
+    def getCurrentPrice(self, currency_pair, direction):
+        if 'buy' == direction:
+            direction = 'asks'
+        elif 'sell' == direction:
+            direction = 'bids'
+        params = {
+            "symbol": currency_pair,
+            "type": "step0"
+        }
+        try:
+            result = self._get_proxied(self._baseurl + "/market/depth", params)
+            result_json = result.json()
+            price = result_json["tick"][direction][0][0]
+            return float(price)
+        except Exception as e:
+            print(str(e))
+
+
 if __name__ == '__main__':
     # cryptopiaApi = CryptopiaApi()
     # print(cryptopiaApi.getCurrentPrice("BTM_BTC", "sell"))
@@ -173,7 +195,8 @@ if __name__ == '__main__':
     # print(gateioApi.getCurrentPrice("btm_eth", "sell"))
     # binanceApi = BinanceApi()
     # print(binanceApi.getCurrentPrice("btm", "eth"))
-    bitfinexApi = BitfinexApi()
-    print(bitfinexApi.getCurrencyPair("qash", "eth"))
-    print()
+    # bitfinexApi = BitfinexApi()
+    # print(bitfinexApi.getCurrencyPair("qash", "eth"))
+    huobiApi = HuobiApi()
+    print(huobiApi.getCurrentPrice("qasheth", "buy"))
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
