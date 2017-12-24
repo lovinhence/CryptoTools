@@ -1,0 +1,9 @@
+{
+  "comparator": {
+    "alert_threshold": 1.02
+  },
+  "api": {
+    "debug": true,
+    "proxy_url": "127.0.0.1:1081"
+  }
+}

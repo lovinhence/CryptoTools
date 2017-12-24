@@ -5,8 +5,6 @@ from util import *
 # if work,all network requests must go through proxies
 DEBUG = True
 
-exchangeConfigJson = getExchangeConfigJson()
-
 
 class Api():
     _exchange_name = ""
