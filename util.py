@@ -57,6 +57,8 @@ def alert(alert_str):
 
 
 def realAlert(alert_str):
+    # cut src and ratio str
+    alert_str = alert_str.split(" ")[-1]
     voiceAlert(alert_str)
     # popupAlert(alert_str)
 

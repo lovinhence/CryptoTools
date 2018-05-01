@@ -25,5 +25,17 @@
     "baseUrl": "https://api.huobi.pro",
     "currencyPairTemplate": "#SRC#DST",
     "isUpper": false
+  },
+  "okex": {
+    "className": "OkexApi",
+    "baseUrl": "https://www.okex.com/api",
+    "currencyPairTemplate": "#SRC_#DST",
+    "isUpper": false
+  },
+  "bigone": {
+    "className": "BigoneApi",
+    "baseUrl": "https://api.big.one",
+    "currencyPairTemplate": "#SRC-#DST",
+    "isUpper": true
   }
 }

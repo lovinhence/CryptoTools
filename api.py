@@ -52,8 +52,8 @@ class HttpApi(Api):
     _proxies = {}
     if DEBUG:
         _proxies = {
-            'http': '127.0.0.1:1081',
-            'https': '127.0.0.1:1081'
+            'http': '127.0.0.1:1080',
+            'https': '127.0.0.1:1080'
         }
 
     def _get(self, url, **kwargs):
@@ -83,7 +83,6 @@ class CryptopiaApi(HttpApi):
 
 class GateioApi(HttpApi):
     _exchange_name = 'gateio'
-    _baseurl = 'http://data.gate.io/api2/1'
 
     def getCurrentPrice(self, currency_pair, direction):
         index = 0
@@ -125,7 +124,6 @@ class BittrexApi(HttpApi):
 
 class BinanceApi(HttpApi):
     _exchange_name = 'binance'
-    _baseurl = "https://www.binance.com/api"
 
     def getCurrentPrice(self, currency_pair, direction):
         if 'buy' == direction:
@@ -146,7 +144,6 @@ class BinanceApi(HttpApi):
 
 class BitfinexApi(HttpApi):
     _exchange_name = 'bitfinex'
-    _baseurl = "https://api.bitfinex.com/v1"
 
     def getCurrentPrice(self, currency_pair, direction):
         if 'buy' == direction:
@@ -164,7 +161,6 @@ class BitfinexApi(HttpApi):
 
 class HuobiApi(HttpApi):
     _exchange_name = 'huobi'
-    _baseurl = "https://api.huobi.pro"
 
     def getCurrentPrice(self, currency_pair, direction):
         if 'buy' == direction:
@@ -184,6 +180,47 @@ class HuobiApi(HttpApi):
             print(str(e))
 
 
+class OkexApi(HttpApi):
+    _exchange_name = 'okex'
+
+    def getCurrentPrice(self, currency_pair, direction):
+        if 'buy' == direction:
+            direction = 'asks'
+        elif 'sell' == direction:
+            direction = 'bids'
+        params = {
+            "symbol": currency_pair,
+            "size": 10,
+        }
+        try:
+            result = self._get_proxied(self._baseurl + "/v1/depth.do", params)
+            result_json = result.json()
+            index = 0
+            if 'asks' == direction:
+                index = -1
+            price = result_json[direction][index][0]
+            return float(price)
+        except Exception as e:
+            print(str(e))
+
+
+class BigoneApi(HttpApi):
+    _exchange_name = 'bigone'
+
+    def getCurrentPrice(self, currency_pair, direction):
+        if 'buy' == direction:
+            direction = 'asks'
+        elif 'sell' == direction:
+            direction = 'bids'
+        try:
+            result = self._get_proxied(self._baseurl + "/markets/" + currency_pair + "/book")
+            result_json = result.json()
+            price = result_json['data'][direction][0]['price']
+            return float(price)
+        except Exception as e:
+            print(str(e))
+
+
 if __name__ == '__main__':
     # cryptopiaApi = CryptopiaApi()
     # print(cryptopiaApi.getCurrentPrice("BTM_BTC", "sell"))
@@ -195,6 +232,10 @@ if __name__ == '__main__':
     # print(binanceApi.getCurrentPrice("btm", "eth"))
     # bitfinexApi = BitfinexApi()
     # print(bitfinexApi.getCurrencyPair("qash", "eth"))
-    huobiApi = HuobiApi()
-    print(huobiApi.getCurrentPrice("qasheth", "buy"))
+    # huobiApi = HuobiApi()
+    # print(huobiApi.getCurrentPrice("qasheth", "buy"))
     # print(binanceApi.getCurrentPrice("LRCETH", "buy"))
+    # okexApi = OkexApi()
+    # print(okexApi.getCurrentPrice("eth_btc", "buy"))
+    bigoneApi = BigoneApi()
+    print(bigoneApi.getCurrentPrice("ETH-BTC", "buy"))
